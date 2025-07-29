@@ -1,0 +1,3 @@
+CUDA Available: True
+Device: NVIDIA GeForce RTX 5090 Laptop GPU
+CUDA Version: 12.8
