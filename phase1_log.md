@@ -32,3 +32,10 @@ torchvision              0.22.1+cu128
 CUDA Available: True
 Device: NVIDIA GeForce RTX 5090 Laptop GPU
 CUDA Version: 12.8
+
+## Day 2: Day 2: Clone Repos and Install Libraries
+
+**Date**: July 30, 2025
+
+**Status**: 
+- pip install transformers datasets networkx nltk beautifulsoup4 gutenberg libdb-dev
