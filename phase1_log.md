@@ -1,52 +1,18 @@
-# UH AI Phase 1 Log
+# Phase 1 Log: Setup and Data Foundation (Weeks 1-3)
 
-## Day 1: Hardware Verification and Base Setup
+## July 28-30, 2025: Environment and Hardware Setup
+- Verified hardware per "my_computer_specs.txt" and "dxdiag_specs.txt": Intel Core Ultra 9 275HX (24 cores), NVIDIA RTX 5090 Laptop GPU (24GB VRAM), 64GB RAM.
+- Installed WSL (Ubuntu), Python venv, PyTorch with CUDA 12.9: `torch.cuda.is_available()` → True; device name: "NVIDIA GeForce RTX 5090 Laptop GPU".
+- Cloned nanoGPT: `git clone https://github.com/karpathy/nanoGPT`.
+- Baseline test: Ran `prepare.py` and `train.py` on TinyShakespeare (batch_size=32, n_layer=4, n_head=4, n_embd=128, max_iters=5000). Final loss ~1.8, perplexity ~6.0 after ~1 hour (VRAM usage ~5-8GB). Generation sample: Coherent Shakespeare-like text.
+- Issues/Fixes: Minor pip conflicts resolved with `--index-url https://download.pytorch.org/whl/cu129`.
 
-**Date**: July 29, 2025
+## July 30, 2025: Repo Tracking Fixes
+- Initialized core files: README.md (project overview), UH_AI_Build_Roadmap.md (phase outlines), phase1_log.md (this log).
+- Added uh_ai_project_tracker.py: Auto-updates logs, commits, pushes. Tested with user input for entries.
+- Set bash alias: `alias track='python uh_ai_project_tracker.py'` in ~/.bashrc. Ran `track` to log: "Phase 1 progress: Setup complete, ready for data."
+- Commit history: Initial commits pushed; no junk—cleaned placeholders.
 
-**Status**: WSL installed and updated successfully.
-- Ran `wsl --install -d Ubuntu` in PowerShell.
-- Set up username/password in Ubuntu.
-- Executed `sudo apt update && sudo apt upgrade -y` without errors.
-- Verified WSL version: [paste output from `lsb_release -a`, e.g., Ubuntu 24.04 LTS]
-- Fixed file error: Created `phase1_log.md` and committed to Git.
-- Pushed to main branch at https://github.com/robertocardadeiro/UH_AI_Build.git
-- nvidia-smi
-Tue Jul 29 23:58:16 2025
-+-----------------------------------------------------------------------------------------+
-| NVIDIA-SMI 575.64.04              Driver Version: 577.00         CUDA Version: 12.9     |
-|-----------------------------------------+------------------------+----------------------+
-| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
-| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
-|                                         |                        |               MIG M. |
-|=========================================+========================+======================|
-|   0  NVIDIA GeForce RTX 5090 ...    On  |   00000000:01:00.0 Off |                  N/A |
-| N/A   40C    P0             27W /  175W |       0MiB /  24463MiB |      0%      Default |
-|                                         |                        |                  N/A |
-+-----------------------------------------+------------------------+----------------------+
-- pip list | grep torch
-torch                    2.7.1+cu128
-torchaudio               2.7.1+cu128
-torchvision              0.22.1+cu128           
-- python3 check_cuda.py
-CUDA Available: True
-Device: NVIDIA GeForce RTX 5090 Laptop GPU
-CUDA Version: 12.8
-
-## Day 2: Day 2: Clone Repos and Install Libraries
-
-**Date**: July 30, 2025
-
-**Status**: 
-- pip install transformers datasets networkx nltk beautifulsoup4 gutenberg libdb-dev
-
-## Auto-Update at 2025-07-30 03:14:50
-- Progress: [e.g., Phase 2 MoE trained on Gutenberg subset; Perplexity: 4.5]
-- Hardware: RTX 5090 used ~12GB VRAM (from dxdiag_specs.txt).
-## Phase 1 Log: Setup & Data\nDate: July 30, 2025\n- Initialized repo.
-
-## 2025-07-30 04:30
-Test entry: Baseline nanoGPT run complete. VRAM usage: 8GB.
-
-## 2025-07-30 04:35
-Test entry: Baseline nanoGPT run complete. VRAM usage: 8GB.
+## Next Steps (Ongoing)
+- Data collection: Plans for Gutenberg (e.g., Plato's Republic ID:150) and OSCAR (English/Portuguese subsets via Hugging Face). Estimate: ~2B tokens for scaling laws compliance.
+- Tie to Desires: Focused on philosophers (Plato/Aristotle) and poets (Shakespeare/Dante) for "navigation through feeling."
