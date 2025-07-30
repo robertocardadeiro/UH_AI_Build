@@ -44,3 +44,6 @@ CUDA Version: 12.8
 - Progress: [e.g., Phase 2 MoE trained on Gutenberg subset; Perplexity: 4.5]
 - Hardware: RTX 5090 used ~12GB VRAM (from dxdiag_specs.txt).
 ## Phase 1 Log: Setup & Data\nDate: July 30, 2025\n- Initialized repo.
+
+## 2025-07-30 04:30
+Test entry: Baseline nanoGPT run complete. VRAM usage: 8GB.
