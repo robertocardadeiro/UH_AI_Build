@@ -34,3 +34,5 @@ Timeline: 10-14 weeks flexible. Current Focus: Finalize Phase 1 data (Gutenberg/
 - Status Update: Phase 1: Data collection started with Gutenberg.
 
 - Status Update: 
+
+- Status Update: Phase 1: Data collection started with Gutenberg.
