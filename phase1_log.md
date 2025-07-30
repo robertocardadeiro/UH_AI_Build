@@ -39,3 +39,8 @@ CUDA Version: 12.8
 
 **Status**: 
 - pip install transformers datasets networkx nltk beautifulsoup4 gutenberg libdb-dev
+
+## Auto-Update at 2025-07-30 03:14:50
+- Progress: [e.g., Phase 2 MoE trained on Gutenberg subset; Perplexity: 4.5]
+- Hardware: RTX 5090 used ~12GB VRAM (from dxdiag_specs.txt).
+## Phase 1 Log: Setup & Data\nDate: July 30, 2025\n- Initialized repo.
