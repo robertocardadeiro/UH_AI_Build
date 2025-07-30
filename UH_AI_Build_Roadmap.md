@@ -11,3 +11,5 @@
 
 Timeline: 10-14 weeks. Current: Phase 1 in progress.
 - Status Update: Phase 1: Data collection started with Gutenberg.
+
+- Status Update: Phase 1: Data collection started with Gutenberg.
