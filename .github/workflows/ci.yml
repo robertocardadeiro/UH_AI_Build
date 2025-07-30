@@ -1,0 +1,27 @@
+name: UH AI CI  # Automatic build/validation
+
+on:
+  push:  # Triggers on every push to main
+    branches: [main]
+  pull_request:  # On PRs
+    branches: [main]
+  workflow_dispatch:  # Manual trigger from GitHub UI
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Cloud runner (free tier)
+    steps:
+      - uses: actions/checkout@v4  # Clones your repo
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install torch transformers datasets  # For your scripts
+      - name: Validate Logs  # Custom step: Check Markdown/logs
+        run: |
+          # Example: Ensure logs exist and are non-empty
+          if [ ! -f UH_AI_Build_Roadmap.md ]; then echo "Roadmap missing!"; exit 1; fi
+          python -c "import os; assert os.path.getsize('UH_AI_Build_Roadmap.md') > 0, 'Empty log!'"
+      - name: Run Tests  # Add tests.py for data/model checks
+        run: python -m unittest discover  # Create tests.py if needed
