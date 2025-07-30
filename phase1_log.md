@@ -16,3 +16,5 @@
 ## Next Steps (Ongoing)
 - Data collection: Plans for Gutenberg (e.g., Plato's Republic ID:150) and OSCAR (English/Portuguese subsets via Hugging Face). Estimate: ~2B tokens for scaling laws compliance.
 - Tie to Desires: Focused on philosophers (Plato/Aristotle) and poets (Shakespeare/Dante) for "navigation through feeling."
+## 2025-07-30 04:47
+Test entry: Baseline nanoGPT run complete. VRAM usage: 8GB.

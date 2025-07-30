@@ -31,3 +31,4 @@ Goal: Build UH AI—a multilingual, philosophy/literature-focused LLM for "navig
 - Cloud scaling if needed (xAI API for Grok-4 inspiration).
 
 Timeline: 10-14 weeks flexible. Current Focus: Finalize Phase 1 data (Gutenberg/OSCAR scripts ready).
+- Status Update: Phase 1: Data collection started with Gutenberg.
