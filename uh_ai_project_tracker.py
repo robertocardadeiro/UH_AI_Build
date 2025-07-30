@@ -3,6 +3,36 @@ import subprocess
 import argparse
 import datetime
 import random  # For any sampling if needed
+import datetime
+import git  # pip install gitpython
+
+REPO_PATH = '.'  # Current dir (your repo)
+LOG_FILE = 'phase1_log.md'
+ROADMAP_FILE = 'UH_AI_Build_Roadmap.md'
+
+def update_log(entry):
+    with open(LOG_FILE, 'a') as f:
+        f.write(f"\n## {datetime.datetime.now().strftime('%Y-%m-%d %H:%M')}\n{entry}\n")
+    print(f"Updated {LOG_FILE}")
+
+def update_roadmap(status):
+    with open(ROADMAP_FILE, 'a') as f:
+        f.write(f"\n- Status Update: {status}\n")
+    print(f"Updated {ROADMAP_FILE}")
+
+def commit_changes(message="Auto-update logs and roadmap"):
+    repo = git.Repo(REPO_PATH)
+    repo.index.add([LOG_FILE, ROADMAP_FILE, 'README.md'])
+    repo.index.commit(message)
+    origin = repo.remote(name='origin')
+    origin.push()
+    print("Committed and pushed changes")
+
+if __name__ == '__main__':
+    # Example usage: python uh_ai_project_tracker.py
+    update_log("Test entry: Baseline nanoGPT run complete. VRAM usage: 8GB.")
+    update_roadmap("Phase 1: Data collection started with Gutenberg.")
+    commit_changes("Tracker auto-update: Phase 1 progress")
 
 def run_git_command(command):
     """Helper to run Git commands and capture output."""
@@ -169,3 +199,10 @@ if __name__ == "__main__":
     with open(args.output_file, "w") as f:
         f.write(report)
     print(f"Report saved to {args.output_file}")
+
+    # Add to script (after imports)
+entry = input("Enter log entry (e.g., 'Baseline run: Loss 2.5'): ")
+status = input("Roadmap status update: ")
+update_log(entry)
+update_roadmap(status)
+commit_changes()
