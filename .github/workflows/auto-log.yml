@@ -1,0 +1,25 @@
+name: Auto-Log Updates
+
+on:
+  push:
+    branches: [main]  # Triggers on pushes to main
+
+jobs:
+  log:
+    runs-on: ubuntu-latest  # GitHub's server
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    - name: Append log
+      run: |
+        echo "Automated log: $(date) - Training phase updated (e.g., perplexity: X from nanoGPT run)" >> phase_log.md
+        git config --global user.name "GitHub Actions Bot"
+        git config --global user.email "actions@github.com"
+        git add phase_log.md
+        git commit -m "Auto-log: Updated training metrics [$(date)]" || echo "No changes to commit"
+        git push origin main
+
+    - name: Notify on failure
+      if: failure()
+      uses: actions/slack-notification@v1  # Optional: Add Slack/Email alerts
