@@ -32,3 +32,5 @@ Goal: Build UH AI—a multilingual, philosophy/literature-focused LLM for "navig
 
 Timeline: 10-14 weeks flexible. Current Focus: Finalize Phase 1 data (Gutenberg/OSCAR scripts ready).
 - Status Update: Phase 1: Data collection started with Gutenberg.
+
+- Status Update: 
