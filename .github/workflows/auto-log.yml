@@ -1,25 +1,47 @@
-name: Auto-Log Updates
+name: Auto-Update Logs and Roadmap
 
 on:
+  schedule:
+    - cron: '0 0 * * *'  # Daily at midnight UTC (adjust for your timezone)
   push:
-    branches: [main]  # Triggers on pushes to main
+    branches: [ main ]  # Trigger on pushes to main
+  workflow_dispatch:  # Manual trigger from GitHub UI
 
 jobs:
-  log:
-    runs-on: ubuntu-latest  # GitHub's server
+  update-logs:
+    runs-on: ubuntu-latest
     steps:
-    - name: Checkout repo
-      uses: actions/checkout@v3
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}  # For pushing back
 
-    - name: Append log
-      run: |
-        echo "Automated log: $(date) - Training phase updated (e.g., perplexity: X from nanoGPT run)" >> phase_log.md
-        git config --global user.name "GitHub Actions Bot"
-        git config --global user.email "actions@github.com"
-        git add phase_log.md
-        git commit -m "Auto-log: Updated training metrics [$(date)]" || echo "No changes to commit"
-        git push origin main
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
 
-    - name: Notify on failure
-      if: failure()
-      uses: actions/slack-notification@v1  # Optional: Add Slack/Email alerts
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install torch transformers datasets  # Add your libs, e.g., for nanoGPT
+
+      - name: Generate/Update Logs
+        run: |
+          # Your custom script: e.g., run a small eval or append to logs
+          echo "Auto-update: $(date)" >> phase1_log.md
+          echo "Latest commit: $(git log -1 --pretty=%B)" >> UH_AI_Build_Roadmap.md
+          # Example: If you have training scripts, run a subset
+          python your_training_script.py --log-only  # Adapt to append metrics
+
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.name "GitHub Actions Bot"
+          git config --global user.email "actions@github.com"
+          git add phase1_log.md UH_AI_Build_Roadmap.md  # Add your log files
+          git commit -m "Auto-update: Logs and roadmap from workflow" || echo "No changes to commit"
+          git push origin main
+
+      - name: Handle Failure
+        if: failure()
+        run: echo "Workflow failed—check logs"
