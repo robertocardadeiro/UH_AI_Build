@@ -1,0 +1,39 @@
+name: Auto-Run UH AI Project Tracker
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Daily at 00:00 UTC (adjust: https://crontab.guru/)
+  push:
+    branches: [ main ]  # On pushes to main
+  workflow_dispatch:  # Manual trigger via GitHub UI
+
+jobs:
+  run-tracker:
+    runs-on: ubuntu-latest  # Free Linux VM; matches your WSL
+
+    steps:
+    - name: Checkout Repo
+      uses: actions/checkout@v4  # Clones your repo automatically
+
+    - name: Set Up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'  # Matches your env
+
+    - name: Install Dependencies
+      run: |
+        pip install -r requirements.txt  # If you have one; else add torch, etc.
+        # Or inline: pip install torch git+https://github.com/karpathy/nanoGPT.git
+
+    - name: Run Tracker Script
+      run: python uh_ai_project_tracker.py --no-clone --output-file tracker_log.md
+
+    - name: Commit and Push Log
+      run: |
+        git config --global user.name "GitHub Actions Bot"
+        git config --global user.email "actions@github.com"
+        git add tracker_log.md
+        git commit -m "Auto-update: Project tracker log from ${{ github.sha }}" || echo "No changes to commit"
+        git push origin main
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Auto-provided; no setup needed
