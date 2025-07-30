@@ -2,38 +2,52 @@ name: Auto-Run UH AI Project Tracker
 
 on:
   schedule:
-    - cron: '0 0 * * *'  # Daily at 00:00 UTC (adjust: https://crontab.guru/)
-  push:
-    branches: [ main ]  # On pushes to main
-  workflow_dispatch:  # Manual trigger via GitHub UI
+    - cron: '0 0 * * *'  # Daily at midnight UTC (adjust: e.g., '0 */6 * * *' for every 6 hours)
+  workflow_dispatch:  # Manual trigger from GitHub UI
 
 jobs:
-  run-tracker:
-    runs-on: ubuntu-latest  # Free Linux VM; matches your WSL
+  track:
+    runs-on: ubuntu-latest  # Matches your WSL
 
     steps:
-    - name: Checkout Repo
-      uses: actions/checkout@v4  # Clones your repo automatically
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}  # For push access
 
-    - name: Set Up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.10'  # Matches your env
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'  # Your env version
 
-    - name: Install Dependencies
-      run: |
-        pip install -r requirements.txt  # If you have one; else add torch, etc.
-        # Or inline: pip install torch git+https://github.com/karpathy/nanoGPT.git
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install torch transformers datasets networkx nltk beautifulsoup4 gutenberg  # Add your libs if needed
 
-    - name: Run Tracker Script
-      run: python uh_ai_project_tracker.py --no-clone --output-file tracker_log.md
+      - name: Activate virtual env and run tracker
+        run: |
+          python -m venv uh_ai_env
+          source uh_ai_env/bin/activate
+          pip install -r requirements.txt  # If you have one; else skip
+          python uh_ai_project_tracker.py --no-clone --output-file tracker_log.md
 
-    - name: Commit and Push Log
-      run: |
-        git config --global user.name "GitHub Actions Bot"
-        git config --global user.email "actions@github.com"
-        git add tracker_log.md
-        git commit -m "Auto-update: Project tracker log from ${{ github.sha }}" || echo "No changes to commit"
-        git push origin main
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Auto-provided; no setup needed
+      - name: Commit and push changes if any
+        run: |
+          git config --global user.name "robertocardadeiro"
+          git config --global user.email "your-email@example.com"  # Replace with yours
+          git add logs/tracker_log.md
+          git commit -m "Auto-update: Project tracker log at $(date +%Y-%m-%d)" || echo "No changes to commit"
+          git push origin main
+
+      - name: Notify on failure (optional)
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: 'Tracker workflow failed! Check logs.'
+            })
